@@ -1,0 +1,27 @@
+$modularscale: (
+  base: 1rem,
+  ratio: 1.2
+);
+
+$sidebar-width: 320px;
+$sidebar-max-width: 25%;
+
+$light-gray: #f8f8f8;
+$medium-gray: #efefef;
+$gray: #85898E;
+$black: #222;
+
+$brand-blue: #9bdbcd;
+
+$blue: #aecdeb;
+$light-blue: #f0f6fc;
+$red: #df7839;
+$orange: #f4d582;
+$cream: #fef6dd;
+
+$base-timing: ease;
+$base-duration: 500ms;
+
+$base-radius: 0.25rem;
+
+$box-shadow: 0 0.5em 1em -0.125em rgba($black, 0.1), 0 0px 0 1px rgba($black, 0.02);

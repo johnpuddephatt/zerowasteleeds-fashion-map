@@ -1,0 +1,324 @@
+<template>
+  <div class="sidebar" :class="menuOpen ? 'menu-open' : ''">
+    <div class="sidebar--header">
+      <img class="sidebar--logo" src="/assets/images/t-shirt.svg" />
+      <div>
+        <h1 class="sidebar--subtitle">Zero Waste Leeds</h1>
+        <h2 class="sidebar--title">Leeds Fashion Map</h2>
+      </div>
+      <button class="button sidebar--header--button" v-if="!isLandscape" @click="menuOpen = !menuOpen" v-html="menuOpen ? 'Show map' : 'Show list'"></button>
+    </div>
+    <div class="sidebar--postcode" v-if="!latLng.length">
+      <label for="postcode" class="sr-only">Postcode</label>
+      <input placeholder="See results by postcode" id="postcode" class="sidebar--postcode--input" type="text" v-model="postcode">
+      <button class="sidebar--postcode--button"@click="convertPostcodeToLatLng" aria-label="Search">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </button>
+    </div>
+    <div v-else class="sidebar--postcode">
+      <div class="sidebar--postcode--badge">
+        Distance from {{ postcode }}
+
+        <button class="sidebar--postcode--clear" @click="clearPostcode" aria-label="Clear postcode">✕</button>
+      </div>
+    </div>
+
+    <p v-if="error" class="sidebar--postcode--error">{{ error }}</p>
+
+
+    <router-link class="sidebar--back" :to="{ name: 'app'}" :class="$route.name != 'app' ? '' : 'is-invisible'">« Back to categories</router-link>
+    <nav class="sidebar--menu">
+      <template v-for="category in categories" :class="($route.params.slug && $route.params.slug != category.slug) ? 'contract' : 'expand'">
+        <router-link :to="{ name: 'category', params: { slug: category.slug } }" :ref="category.slug" :key="category.slug" class="sidebar--menu--item" :class="($route.params.slug && $route.params.slug !== category.slug) ? 'contract' : 'expand'">
+            <img class="sidebar--menu--item--icon" :src="category.icon" />
+            {{ category.title }}
+            <svg class="sidebar--menu--item--arrow"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 841.89 595.28"><path d="M412.98 119.97l64.25 49.48L623.3 281.97c8.54 6.57 8.54 25.49 0 32.07L477.22 426.55l-64.25 49.48" fill="none" stroke="#bfc1c1" stroke-width="15.527" stroke-miterlimit="10"/></svg>
+        </router-link>
+        <transition name="expand">
+          <router-view v-if="$route.params.slug == category.slug" :key="$route.params.slug" :userLatLng="userLatLng" :selectedEntryID="selectedEntryID" @menu-entry-selected="$emit('menu-entry-selected', $event)" @filtered-entries="$emit('filtered-entries', $event)"></router-view>
+        </transition>
+      </template>
+    </nav>
+
+  </div>
+</template>
+
+<script>
+
+export default {
+  name: 'Menu',
+  props: ['categories','selectedEntryID', 'isLandscape', 'userLatLng'],
+  data() {
+    return {
+      menuOpen: false,
+      commentCounts: null,
+      postcode: null,
+      error: null,
+      latLng: [],
+    }
+  },
+  computed: {
+  },
+  watch: {
+    latLng: function() {
+      this.$emit('user-latlng-changed', this.latLng);
+    },
+    selectedEntryID: function(selectedEntryID) {
+      if(selectedEntryID) {
+        this.menuOpen = false;
+      }
+    }
+  },
+  methods: {
+    mouseoverCategory: function(selectedCategoryID) {
+      this.$emit('menu-hovered',selectedCategoryID);
+    },
+    convertPostcodeToLatLng: function() {
+      fetch(`//api.postcodes.io/postcodes/${ this.postcode.split(' ').join('') }`)
+      .then(response => response.json())
+      .then((data) => {
+        if(data.status == 200) {
+          this.latLng = [data.result.latitude, data.result.longitude];
+          this.error = null;
+          this.postcode = this.postcode.toUpperCase()
+        }
+        else {
+          this.error = data.error;
+        }
+      });
+    },
+    clearPostcode: function() {
+      this.latLng = [];
+      this.postcode = null;
+    }
+  },
+  mounted() {
+  }
+}
+</script>
+
+<style lang="scss">
+
+@import '../../styles/base.scss';
+
+.sidebar {
+  z-index: 999999;
+  position: absolute;
+  background-color: white;
+  padding: ms(2) 0 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  top: calc(100% - #{ms(10)});
+  border-top: ms(-2) solid $brand-blue;
+  transition: top 1s ease, z-index 1.5s ease;
+  display: flex;
+  flex-direction: column;
+
+  &.menu-open {
+    overflow-y: auto;
+    z-index: 9999999;
+    top: 0;
+    transition: top 1s ease, z-index 0s ease;
+  }
+
+  @media screen and (orientation: landscape) and (min-width: 800px) {
+    display: block;
+    overflow-y: auto;
+    position: fixed;
+    top: ms(1);
+    height: auto;
+    left: ms(1);
+    bottom: auto;
+    padding: ms(4) 0 0;
+    box-shadow: $box-shadow;
+    width: $sidebar-width;
+    // max-width: $sidebar-max-width;
+  }
+
+  &--header {
+    line-height: ms(4);
+    padding: 0 ms(0);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    @media screen and (orientation: landscape) and (min-width: 800px) {
+      padding: 0 ms(2);
+    }
+
+    &--button {
+      font-size: ms(-1);
+      margin-left: auto;
+
+      @media screen and (orientation: landscape) and (min-width: 800px) {
+        font-size: ms(0);
+      }
+    }
+  }
+
+  &--logo {
+    display: block;
+    width: ms(6);
+    height: auto;
+    margin-right: ms(-2);
+
+    @media screen and (orientation: landscape) and (min-width: 800px) {
+      width: ms(7);
+    }
+  }
+
+  &--title {
+    font-weight: 400;
+    font-size: ms(1);
+    color: $gray;
+
+    @media screen and (orientation: landscape) and (min-width: 800px) {
+      font-size: ms(2);
+    }
+  }
+
+  &--subtitle {
+    font-weight: 700;
+    margin-bottom: 0;
+    font-size: ms(-1);
+
+    @media screen and (orientation: landscape) and (min-width: 800px) {
+      margin-bottom: ms(-6);
+      font-size: ms(0);
+    }
+  }
+
+  &--back {
+    display: block;
+    color: $gray;
+    text-transform: lowercase;
+    padding: ms(-2) ms(2);
+    font-size: ms(0);
+  }
+
+  &--postcode {
+    margin: ms(-2) ms(2) 0;
+    display: flex;
+    flex-direction: row;
+
+    &--input {
+      flex: 1;
+      line-height: 1.5;
+      border: 1px solid $medium-gray;
+      border-radius: 2em;
+      padding: ms(-5) ms(-2);
+      margin-right: ms(-6);
+    }
+
+    &--button {
+      line-height: 1.5;
+      background-color: $medium-gray;
+      color: $gray;
+      border-radius: 2em;
+      padding: ms(-6) ms(-2);
+      svg {
+        width: ms(0);
+        height: ms(0);
+      }
+    }
+
+    &--error {
+      padding: ms(-1);
+      border: 1px solid $red;
+      border-radius: ms(-4);
+      background-color: lighten($red, 30%);
+      margin: ms(0) ms(2) 0;
+      color: $red;
+    }
+
+    &--badge {
+      padding: ms(-5) ms(-1);
+      border: 1px solid $gray;
+      border-radius: 2em;
+      background-color: $light-gray;
+      color: $gray;
+    }
+  }
+
+  &--menu {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    @media screen and (orientation: landscape) and (min-width: 800px) {
+      max-height: 60vh;
+    }
+
+    &--status::before {
+      background-image: url(/assets/images/eye-icon.svg);
+    }
+
+    &--comments::before {
+      background-image: url(/assets/images/comment-icon.svg);
+    }
+
+    &--photos::before {
+      background-image: url(/assets/images/camera-icon.svg);
+    }
+
+    &--item {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      flex: 0 0 4em;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 0 ms(2);
+
+      @media screen and (orientation: landscape) and (min-width: 800px) {
+
+      }
+
+      &:not(:last-child) {
+        border-bottom: 1px solid $light-gray;
+      }
+
+      @extend .expand-enter-active;
+
+      &.contract {
+        flex: 0 0 0;
+        opacity: 0;
+
+        @extend .expand-leave-active;
+      }
+
+      &.router-link-active {
+        background-color: $brand-blue;
+
+        .sidebar--menu--item--icon {
+          filter: brightness(0.3);
+        }
+
+      }
+
+      &:hover {
+        background-color: $light-blue;
+      }
+
+      &--icon {
+        width: ms(4);
+        height: ms(4);
+        object-fit: contain;
+        object-position: center;
+        display: block;
+        margin-right: ms(1);
+      }
+
+      &--arrow {
+        width: ms(4);
+        height: ms(4);
+        margin-left: auto;
+      }
+    }
+  }
+}
+</style>
