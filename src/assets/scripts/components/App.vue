@@ -1,7 +1,7 @@
 <template>
   <div class="map-wrapper">
     <transition name="fade">
-      <div class="dialog-wrapper" v-if="!hasVisitedBefore && siteDataLoaded">
+      <div class="dialog-wrapper" v-if="!hasVisitedBefore && siteDataLoaded && entriesLoaded">
         <div class="dialog">
           <div class="dialog-inner">
             <h3>{{ site.welcome_title }}</h3>
