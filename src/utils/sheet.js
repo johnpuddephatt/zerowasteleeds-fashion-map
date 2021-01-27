@@ -40,7 +40,6 @@ module.exports = (sheetID, documentID, compact) => {
                 "longitude": item.gsx$longitude?.$t
               };
 
-              console.log('compact...', compact);
               if (!compact) {
                 row.address = item.gsx$address?.$t;
                 row.postcode = item.gsx$postcode?.$t;

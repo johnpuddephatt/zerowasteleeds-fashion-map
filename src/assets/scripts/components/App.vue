@@ -5,7 +5,7 @@
         <div class="dialog">
           <div class="dialog-inner">
             <h3>{{ site.welcome_title }}</h3>
-            <p v-html="site.welcome_message.replace(/(?:\r\n|\r|\n)/g, '<br />').replace('$number', cinemas.length)"></p>
+            <p v-html="site.welcome_message.replace(/(?:\r\n|\r|\n)/g, '<br />').replace('$number', entries.length)"></p>
             <button class="button is-primary is-large" @click="confirmEntrance">Enter</button>
           </div>
         </div>
