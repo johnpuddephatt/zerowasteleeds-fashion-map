@@ -5,14 +5,13 @@
     :zoom="zoom"
     :minZoom="12"
     :center="center"
-    :scrollWheelZoom="scrollWheelZoom"
     :options="mapOptions"
     :inertia="true"
     :zoomAnimation="true"
     :noBlockingAnimations="true"
     @mouseenter="mapActive = true"
     @mouseleave="mapActive = false">
-    <l-control-zoom :position="'bottomright'" />
+    <l-control-zoom :position="isLandscape ? 'bottomright' : 'topright'" />
     <l-tile-layer :url="url" :attribution="attribution" />
     <v-icondefault :image-path="'/assets/images/'"></v-icondefault>
     <v-marker-cluster ref="cluster" :options="clusterOptions">
@@ -82,8 +81,8 @@ export default {
       url: 'https://stamen-tiles.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.png',
     	maxZoom: 24,
     	attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
-      scrollWheelZoom: window.self == window.top,
       mapOptions: {
+        scrollWheelZoom: window.self == window.top,
         zoomSnap: 0.5,
         zoomControl: false,
         zoomAnimationThreshold: 8,

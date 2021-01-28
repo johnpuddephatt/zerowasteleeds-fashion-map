@@ -9,7 +9,7 @@
           </div>
         </div>
     </transition> -->
-    <Menu v-if="categories" :entryCount="(filteredEntries ? filteredEntries.length : entries.length)" :userLatLng="userLatLng" :categories="categories" :isLandscape="isLandscape()" :selectedEntryID="selectedEntryID" @user-latlng-changed="updateUserLatLng($event)" @menu-entry-selected="selectedEntryID = $event" @filtered-entries="filteredEntries = $event"></Menu>
+    <Menu v-if="categories" :entryCount="entries.length" :userLatLng="userLatLng" :categories="categories" :isLandscape="isLandscape()" :selectedEntryID="selectedEntryID" @user-latlng-changed="updateUserLatLng($event)" @menu-entry-selected="selectedEntryID = $event" @filtered-entries="filteredEntries = $event"></Menu>
     <Map v-if="entries" :isLandscape="isLandscape()" :entries="filteredEntries.length ? filteredEntries : entries" :userLatLng="userLatLng" :selectedEntryID="selectedEntryID" @marker-clicked="onMarkerClicked"></Map>
     <!-- <transition v-if="entries" v-for="entry in (filteredEntries.length ? filteredEntries : entries)" name="popup" :key="entry.id">
       <Popup v-if="entry.id == selectedEntryID" :entry="entry" @close="selectedEntryID = null"></Popup>
