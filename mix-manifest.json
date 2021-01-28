@@ -1,4 +1,6 @@
 {
-    "/dist/assets/scripts/main.js": "/dist/assets/scripts/main.js",
-    "/dist/assets/styles/main.css": "/dist/assets/styles/main.css"
+    "/dist/assets/scripts/main.js": "/dist/assets/scripts/main.js?id=9c41ca846c1d26b23c11",
+    "/dist/assets/scripts/manifest.js": "/dist/assets/scripts/manifest.js?id=804566be516b7c9e1896",
+    "/dist/assets/styles/main.css": "/dist/assets/styles/main.css?id=7aab61035a658e903b7c",
+    "/dist/assets/scripts/vendor.js": "/dist/assets/scripts/vendor.js?id=1b6dbf7925356fcf41b2"
 }

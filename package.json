@@ -52,10 +52,10 @@
   },
   "scripts": {
     "clean": "rimraf dist",
-    "serve:webpack": "node_modules/webpack/bin/webpack.js --progress --env=local --config=node_modules/laravel-mix/setup/webpack.config.js --mode development --watch",
+    "serve:webpack": "cross-env NODE_ENV=local node_modules/webpack/bin/webpack.js --progress --env=local --config=node_modules/laravel-mix/setup/webpack.config.js --mode development --watch",
     "serve:eleventy": "ELEVENTY_ENV=development eleventy --serve",
     "serve": "npm-run-all clean --parallel serve:*",
-    "build:webpack": "node_modules/webpack/bin/webpack.js --env=production --config=node_modules/laravel-mix/setup/webpack.config.js --mode production",
+    "build:webpack": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --env=production --config=node_modules/laravel-mix/setup/webpack.config.js --mode production",
     "build:eleventy": "ELEVENTY_ENV=production eleventy",
     "seed": "ELEVENTY_ENV=seed eleventy",
     "build": "run-s clean build:*",

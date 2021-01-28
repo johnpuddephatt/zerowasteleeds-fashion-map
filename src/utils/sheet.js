@@ -8,7 +8,7 @@ var slugify = require('slugify');
 // via a URL of this form. We just need to pass in the ID of the sheet
 // which we can find in the URL of the document.
 
-module.exports = (sheetID, documentID, compact) => {
+module.exports = (sheetID, documentID, categoryTitle, compact) => {
   let cachePath = `${__dirname}/../data/cache/${documentID}_${sheetID}_${compact ? 'compact' : 'full'}.json`;
 
   return new Promise((resolve, reject) => {
@@ -41,11 +41,18 @@ module.exports = (sheetID, documentID, compact) => {
               };
 
               if (!compact) {
+                row.category = categoryTitle;
+                row.description = item.gsx$description?.$t;
                 row.address = item.gsx$address?.$t;
                 row.postcode = item.gsx$postcode?.$t;
                 row.website = item.gsx$website?.$t;
                 row.facebook = item.gsx$facebook?.$t;
                 row.twitter =  item.gsx$twitter?.$t;
+                row.instagram =  item.gsx$instagram?.$t;
+                row.depop =  item.gsx$depop?.$t;
+                row.ebay =  item.gsx$ebay?.$t;
+                row.shop = item.gsx$onlineshop?.$t;
+                row.shop2 = item.gsx$onlineshop2?.$t;
               }
 
               data.push(row);

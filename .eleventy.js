@@ -62,11 +62,11 @@ module.exports = function (config) {
     // Pass-through files
     config.addPassthroughCopy('src/_assets')
     config.addPassthroughCopy('src/robots.txt')
-    config.addPassthroughCopy('src/site.webmanifest')
     config.addPassthroughCopy('src/assets/images')
     config.addPassthroughCopy('src/assets/fonts')
     config.addPassthroughCopy({'src/data/site.json' : 'api/site.json'})
     config.addPassthroughCopy({'src/data/categories.json' : 'api/categories.json'})
+    config.addPassthroughCopy({ "./src/favicons/**/*": "./" });
 
 
     // Deep-Merge

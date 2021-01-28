@@ -13,8 +13,7 @@ class Page {
     };
   }
   render(data) {
-    console.log('category.11ty.js');
-    return sheet(data.category.sheet_number,data.site.sheet, false);
+    return sheet(data.category.sheet_number,data.site.sheet, data.category.title, false);
   }
 }
 

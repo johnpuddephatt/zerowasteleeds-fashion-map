@@ -10,8 +10,8 @@
     </div>
     <div class="sidebar--postcode" v-if="!latLng.length">
       <label for="postcode" class="sr-only">Postcode</label>
-      <input placeholder="See results by postcode" id="postcode" class="sidebar--postcode--input" type="text" v-model="postcode">
-      <button class="sidebar--postcode--button"@click="convertPostcodeToLatLng" aria-label="Search">
+      <input @keyup.enter="convertPostcodeToLatLng" placeholder="See results by postcode" id="postcode" class="sidebar--postcode--input" type="text" v-model="postcode">
+      <button class="sidebar--postcode--button" @click="convertPostcodeToLatLng" aria-label="Search">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
@@ -20,7 +20,6 @@
     <div v-else class="sidebar--postcode">
       <div class="sidebar--postcode--badge">
         Distance from {{ postcode }}
-
         <button class="sidebar--postcode--clear" @click="clearPostcode" aria-label="Clear postcode">✕</button>
       </div>
     </div>
@@ -37,7 +36,7 @@
             <svg class="sidebar--menu--item--arrow"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 841.89 595.28"><path d="M412.98 119.97l64.25 49.48L623.3 281.97c8.54 6.57 8.54 25.49 0 32.07L477.22 426.55l-64.25 49.48" fill="none" stroke="#bfc1c1" stroke-width="15.527" stroke-miterlimit="10"/></svg>
         </router-link>
         <transition name="expand">
-          <router-view v-if="$route.params.slug == category.slug" :key="$route.params.slug" :userLatLng="userLatLng" :selectedEntryID="selectedEntryID" @menu-entry-selected="$emit('menu-entry-selected', $event)" @filtered-entries="$emit('filtered-entries', $event)"></router-view>
+          <router-view v-if="$route.params.slug == category.slug" :key="$route.params.slug" :menuOpen="menuOpen" :isLandscape="isLandscape" :userLatLng="userLatLng" :selectedEntryID="selectedEntryID" @menu-entry-selected="$emit('menu-entry-selected', $event)" @filtered-entries="$emit('filtered-entries', $event)"></router-view>
         </transition>
       </template>
     </nav>
@@ -203,6 +202,7 @@ export default {
     margin: ms(-2) ms(2) 0;
     display: flex;
     flex-direction: row;
+    position: relative;
 
     &--input {
       flex: 1;
@@ -210,19 +210,32 @@ export default {
       border: 1px solid $medium-gray;
       border-radius: 2em;
       padding: ms(-5) ms(-2);
-      margin-right: ms(-6);
+
+      &:focus {
+        outline: none;
+        box-shadow: none;
+        border-color: $gray;
+      }
     }
 
     &--button {
-      line-height: 1.5;
+      position: absolute;
+      right: 1px;
+      top: 1px;
+      line-height: 1.4;
       background-color: $medium-gray;
       color: $gray;
       border-radius: 2em;
-      padding: ms(-6) ms(-2);
+      padding: ms(-2) ms(-2);
       svg {
         width: ms(0);
         height: ms(0);
       }
+    }
+
+    &--clear {
+      margin-left: ms(0);
+      color: black;
     }
 
     &--error {

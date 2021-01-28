@@ -13,7 +13,7 @@
 
 export default {
   name: 'Category',
-  props: ['slug','selectedEntryID', 'userLatLng'],
+  props: ['slug','selectedEntryID', 'userLatLng', 'menuOpen', 'isLandscape'],
   components: {
 
   },
@@ -38,7 +38,7 @@ export default {
       if(selectedEntryID) {
         let clickedMenuElement = this.$refs[selectedEntryID][0];
         if(clickedMenuElement) {
-          if(!this.currentlyHovered) {
+          if(!this.currentlyHovered && (this.isLandscape || this.menuOpen)) {
             clickedMenuElement.scrollIntoView({behavior: "smooth", block: "center", inline: "center"});
           }
         }
@@ -57,7 +57,12 @@ export default {
           }
           return entry;
         }).sort( (a,b) => {
-          return a.distance - b.distance;
+          if(!b.distance) {
+            return -1;
+          }
+          else {
+            return a.distance - b.distance;
+          }
         });
       }
       else {
