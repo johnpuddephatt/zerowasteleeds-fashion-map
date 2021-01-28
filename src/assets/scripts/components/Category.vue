@@ -135,7 +135,11 @@ export default {
     }
 
     &:hover {
-      background-color: $light-blue;
+      background-color: $light-gray;
+
+      .category-panel--entry--location {
+        background-color: $medium-gray;
+      }
     }
 
     &--title {
@@ -156,7 +160,7 @@ export default {
     }
 
     &.selected {
-      border-left-color: $blue;
+      border-left-color: $black;
     }
   }
 }

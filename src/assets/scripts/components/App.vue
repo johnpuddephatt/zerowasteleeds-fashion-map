@@ -1,6 +1,6 @@
 <template>
   <div class="map-wrapper">
-    <transition v-if="siteDataLoaded && entriesLoaded && !hasVisitedBefore" name="fade">
+    <!-- <transition v-if="siteDataLoaded && entriesLoaded && !hasVisitedBefore" name="fade">
         <div class="dialog">
           <div class="dialog-inner">
             <h3>{{ site.welcome_title }}</h3>
@@ -8,7 +8,7 @@
             <button class="button is-primary is-large" @click="confirmEntrance">Enter</button>
           </div>
         </div>
-    </transition>
+    </transition> -->
     <Menu v-if="categories" :userLatLng="userLatLng" :categories="categories" :isLandscape="isLandscape()" :selectedEntryID="selectedEntryID" @user-latlng-changed="updateUserLatLng($event)" @menu-entry-selected="selectedEntryID = $event" @filtered-entries="filteredEntries = $event"></Menu>
     <Map v-if="entries" :entries="filteredEntries.length ? filteredEntries : entries" :userLatLng="userLatLng" :selectedEntryID="selectedEntryID" @marker-clicked="onMarkerClicked"></Map>
     <transition v-if="entries" v-for="entry in (filteredEntries.length ? filteredEntries : entries)" name="popup" :key="entry.id">

@@ -10,7 +10,7 @@
     </div>
     <div class="sidebar--postcode" v-if="!latLng.length">
       <label for="postcode" class="sr-only">Postcode</label>
-      <input @keyup.enter="convertPostcodeToLatLng" placeholder="See results by postcode" id="postcode" class="sidebar--postcode--input" type="text" v-model="postcode">
+      <input @keyup.enter="convertPostcodeToLatLng" placeholder="Enter your postcode" id="postcode" class="sidebar--postcode--input" type="text" v-model="postcode">
       <button class="sidebar--postcode--button" @click="convertPostcodeToLatLng" aria-label="Search">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -110,7 +110,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  top: calc(100% - #{ms(10)});
+  top: calc(100% - #{ms(12) + ms(-2)});
   border-top: ms(-2) solid $brand-blue;
   transition: top 1s ease, z-index 1.5s ease;
   display: flex;
@@ -163,16 +163,12 @@ export default {
     width: ms(6);
     height: auto;
     margin-right: ms(-2);
-
-    @media screen and (orientation: landscape) and (min-width: 800px) {
-      width: ms(7);
-    }
   }
 
   &--title {
     font-weight: 400;
     font-size: ms(1);
-    color: $gray;
+    color: $dark-gray;
 
     @media screen and (orientation: landscape) and (min-width: 800px) {
       font-size: ms(2);
@@ -183,6 +179,7 @@ export default {
     font-weight: 700;
     margin-bottom: 0;
     font-size: ms(-1);
+    color: $dark-gray;
 
     @media screen and (orientation: landscape) and (min-width: 800px) {
       margin-bottom: ms(-6);
@@ -192,24 +189,28 @@ export default {
 
   &--back {
     display: block;
-    color: $gray;
+    color: $dark-gray;
     text-transform: lowercase;
     padding: ms(-2) ms(2);
     font-size: ms(0);
   }
 
   &--postcode {
-    margin: ms(-2) ms(2) 0;
+    margin: ms(0) ms(2) 0;
     display: flex;
     flex-direction: row;
     position: relative;
 
     &--input {
       flex: 1;
-      line-height: 1.5;
+      line-height: 1.6;
       border: 1px solid $medium-gray;
       border-radius: 2em;
       padding: ms(-5) ms(-2);
+
+      &::placeholder {
+        color: $gray;
+      }
 
       &:focus {
         outline: none;
