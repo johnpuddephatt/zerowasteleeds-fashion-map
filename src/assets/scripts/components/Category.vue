@@ -1,10 +1,10 @@
 <template>
     <div class="category-panel" @mouseleave="currentlyHovered = null">
-      <div class="category-panel--entry" :class="{selected: (entry.id == selectedEntryID)}" v-for="entry in entriesSortedByDistance" :key="entry.id" :ref="entry.id" @click="$emit('menu-entry-selected',entry.id)">
+      <button class="category-panel--entry" :class="{selected: (entry.id == selectedEntryID)}" v-for="entry in entriesSortedByDistance" :key="entry.id" :ref="entry.id" @keyup.enter="$emit('menu-entry-selected',entry.id)" @click="$emit('menu-entry-selected',entry.id)">
         <h3 class="category-panel--entry--title" >{{ entry.name }}</h3>
         <span class="category-panel--entry--location" v-if="entry.distance">{{ entry.distance }} miles</span>
         <span class="category-panel--entry--location" v-else-if="entry.postcode">{{ entry.postcode }}</span>
-      </div>
+      </button>
     </div>
 </template>
 
@@ -124,8 +124,10 @@ export default {
   overflow-y: auto;
 
   &--entry {
+    width: 100%;
     display: flex;
     flex-direction: row;
+    text-align: left;
     padding: ms(2) ms(2) ms(2) ms(2)/2;
     cursor: pointer;
     border-left: ms(2)/2 solid transparent;
@@ -148,6 +150,7 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      margin-right: auto;
     }
 
     &--location {

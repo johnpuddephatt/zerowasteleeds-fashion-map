@@ -8,38 +8,44 @@
       </div>
       <button class="button sidebar--header--button" v-if="!isLandscape" @click="menuOpen = !menuOpen" v-html="menuOpen ? 'Show map' : 'Show list'"></button>
     </div>
-    <div class="sidebar--postcode" v-if="!latLng.length">
-      <label for="postcode" class="sr-only">Postcode</label>
-      <input @keyup.enter="convertPostcodeToLatLng" placeholder="Enter your postcode" id="postcode" class="sidebar--postcode--input" type="text" v-model="postcode">
-      <button class="sidebar--postcode--button" @click="convertPostcodeToLatLng" aria-label="Search">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-      </button>
-    </div>
-    <div v-else class="sidebar--postcode">
-      <div class="sidebar--postcode--badge">
-        Distance from {{ postcode }}
-        <button class="sidebar--postcode--clear" @click="clearPostcode" aria-label="Clear postcode">✕</button>
+
+    <div class="sidebar--controls">
+      <router-link class="sidebar--back" :to="{ name: 'app'}" v-if="$route.name != 'app'">« Back to categories</router-link>
+      <span class="sidebar--back" v-else>{{ entryCount }} entries loaded</span>
+
+      <div class="sidebar--postcode" v-if="!latLng.length">
+        <label for="postcode" class="sr-only">Postcode</label>
+        <input @keyup.enter="convertPostcodeToLatLng" placeholder="Enter postcode" id="postcode" class="sidebar--postcode--input" type="text" v-model="postcode">
+        <button class="sidebar--postcode--button" @click="convertPostcodeToLatLng" aria-label="Search">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </button>
+      </div>
+      <div v-else class="sidebar--postcode">
+        <div class="sidebar--postcode--badge">
+          Near to {{ postcode }}
+          <button class="sidebar--postcode--clear" @click="clearPostcode" aria-label="Clear postcode">✕</button>
+        </div>
       </div>
     </div>
 
     <p v-if="error" class="sidebar--postcode--error">{{ error }}</p>
+    <transition name="fade" >
 
-
-    <router-link class="sidebar--back" :to="{ name: 'app'}" :class="$route.name != 'app' ? '' : 'is-invisible'">« Back to categories</router-link>
-    <nav class="sidebar--menu">
-      <template v-for="category in categories" :class="($route.params.slug && $route.params.slug != category.slug) ? 'contract' : 'expand'">
-        <router-link :to="{ name: 'category', params: { slug: category.slug } }" :ref="category.slug" :key="category.slug" class="sidebar--menu--item" :class="($route.params.slug && $route.params.slug !== category.slug) ? 'contract' : 'expand'">
-            <img class="sidebar--menu--item--icon" :src="category.icon" />
-            {{ category.title }}
-            <svg class="sidebar--menu--item--arrow"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 841.89 595.28"><path d="M412.98 119.97l64.25 49.48L623.3 281.97c8.54 6.57 8.54 25.49 0 32.07L477.22 426.55l-64.25 49.48" fill="none" stroke="#bfc1c1" stroke-width="15.527" stroke-miterlimit="10"/></svg>
-        </router-link>
-        <transition name="expand">
-          <router-view v-if="$route.params.slug == category.slug" :key="$route.params.slug" :menuOpen="menuOpen" :isLandscape="isLandscape" :userLatLng="userLatLng" :selectedEntryID="selectedEntryID" @menu-entry-selected="$emit('menu-entry-selected', $event)" @filtered-entries="$emit('filtered-entries', $event)"></router-view>
-        </transition>
-      </template>
-    </nav>
+      <nav class="sidebar--menu" v-show="isLandscape || menuOpen" >
+        <template v-for="category in categories"  :class="($route.params.slug && $route.params.slug != category.slug) ? 'contract' : 'expand'">
+          <router-link :to="{ name: 'category', params: { slug: category.slug } }" :ref="category.slug" :tabindex="($route.params.slug && $route.params.slug != category.slug) ? -1 : ''" :key="category.slug" class="sidebar--menu--item" :class="($route.params.slug && $route.params.slug !== category.slug) ? 'contract' : 'expand'">
+              <img class="sidebar--menu--item--icon" :src="category.icon" />
+              {{ category.title }}
+              <svg class="sidebar--menu--item--arrow"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 841.89 595.28"><path d="M412.98 119.97l64.25 49.48L623.3 281.97c8.54 6.57 8.54 25.49 0 32.07L477.22 426.55l-64.25 49.48" fill="none" stroke="#bfc1c1" stroke-width="15.527" stroke-miterlimit="10"/></svg>
+          </router-link>
+          <transition name="expand">
+            <router-view v-if="$route.params.slug == category.slug" :key="$route.params.slug" :menuOpen="menuOpen" :isLandscape="isLandscape" :userLatLng="userLatLng" :selectedEntryID="selectedEntryID" @menu-entry-selected="$emit('menu-entry-selected', $event)" @filtered-entries="$emit('filtered-entries', $event)"></router-view>
+          </transition>
+        </template>
+      </nav>
+    </transition>
 
   </div>
 </template>
@@ -48,7 +54,7 @@
 
 export default {
   name: 'Menu',
-  props: ['categories','selectedEntryID', 'isLandscape', 'userLatLng'],
+  props: ['categories','selectedEntryID', 'isLandscape', 'userLatLng', 'entryCount'],
   data() {
     return {
       menuOpen: false,
@@ -106,11 +112,11 @@ export default {
   z-index: 999999;
   position: absolute;
   background-color: white;
-  padding: ms(2) 0 0;
+  padding: ms(0) 0 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  top: calc(100% - #{ms(12) + ms(-2)});
+  top: calc(100% - #{ms(12) - ms(-2)});
   border-top: ms(-2) solid $brand-blue;
   transition: top 1s ease, z-index 1.5s ease;
   display: flex;
@@ -145,7 +151,7 @@ export default {
     align-items: center;
 
     @media screen and (orientation: landscape) and (min-width: 800px) {
-      padding: 0 ms(2);
+      padding: 0 ms(2) ms(0);
     }
 
     &--button {
@@ -187,22 +193,29 @@ export default {
     }
   }
 
+  &--controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: ms(-2) ms(0) ms(-2) ms(2);
+  }
+
   &--back {
     display: block;
     color: $dark-gray;
     text-transform: lowercase;
-    padding: ms(-2) ms(2);
-    font-size: ms(0);
+    font-size: ms(-1);
   }
 
   &--postcode {
-    margin: ms(0) ms(2) 0;
-    display: flex;
-    flex-direction: row;
+
+    margin-left: auto;
     position: relative;
 
     &--input {
-      flex: 1;
+      padding-right: ms(6);
+      font-size: ms(-1);
+      width: 11em;
       line-height: 1.6;
       border: 1px solid $medium-gray;
       border-radius: 2em;
@@ -221,13 +234,13 @@ export default {
 
     &--button {
       position: absolute;
-      right: 1px;
-      top: 1px;
+      right: 2px;
+      top: 2px;
       line-height: 1.4;
       background-color: $medium-gray;
       color: $gray;
       border-radius: 2em;
-      padding: ms(-2) ms(-2);
+      padding: ms(-4);
       svg {
         width: ms(0);
         height: ms(0);
@@ -240,11 +253,12 @@ export default {
     }
 
     &--error {
-      padding: ms(-1);
+      padding: ms(-1) ms(0);
+      font-size: ms(-1);
       border: 1px solid $red;
-      border-radius: ms(-4);
+      border-radius: 3em;
       background-color: lighten($red, 30%);
-      margin: ms(0) ms(2) 0;
+      margin: 0 ms(0) ms(-2) ms(2);
       color: $red;
     }
 
@@ -252,6 +266,7 @@ export default {
       padding: ms(-5) ms(-1);
       border: 1px solid $gray;
       border-radius: 2em;
+      font-size: ms(-1);
       background-color: $light-gray;
       color: $gray;
     }
@@ -292,15 +307,17 @@ export default {
 
       }
 
-      &:not(:last-child) {
-        border-bottom: 1px solid $light-gray;
-      }
+      // &:not(:last-child) {
+        border-top: 1px solid $light-gray;
+      // }
 
       @extend .expand-enter-active;
 
       &.contract {
         flex: 0 0 0;
         opacity: 0;
+        user-select: none;
+        pointer-events: none;
 
         @extend .expand-leave-active;
       }

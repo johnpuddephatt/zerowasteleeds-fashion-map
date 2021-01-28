@@ -15,7 +15,7 @@
     <l-tile-layer :url="url" :attribution="attribution" />
     <v-icondefault :image-path="'/assets/images/'"></v-icondefault>
     <v-marker-cluster ref="cluster" :options="clusterOptions">
-      <l-marker :ref="entry.id" v-for="entry in entriesWithLatLng" :key="entry.id" :lat-lng="getLatLng(entry)" @click="markerClicked(entry.id)">
+      <l-marker :ref="entry.id" v-for="entry in entriesWithLatLng" :key="entry.id" :lat-lng="getLatLng(entry)" @keyup.enter="markerClicked(entry.id)" @click="markerClicked(entry.id)">
         <l-popup :options="{offset: [0, -34], closeButton: false}">
           <div class="popup-header">
             <p>{{ entry.category}}</p>
@@ -36,7 +36,7 @@
               <li v-if="entry.ebay"><a class="entry-social entry-social__ebay" :href="entry.ebay" title="eBay" aria-label="eBay" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 120.324" width="300" height="120.324"><path d="M38.866 26.308C17.721 26.308.1 35.28.1 62.345c0 21.442 11.849 34.944 39.312 34.944 32.327 0 34.399-21.294 34.399-21.294H58.147s-3.358 11.466-19.69 11.466c-13.302 0-22.87-8.986-22.87-21.58H75.45v-7.904c0-12.46-7.91-31.669-36.583-31.669zM38.32 36.41c12.663 0 21.295 7.758 21.295 19.384h-43.68c0-12.343 11.266-19.384 22.385-19.384z" fill="#e53238"/><path d="M75.438.1v83.597c0 4.745-.339 11.408-.339 11.408h14.94s.536-4.785.536-9.159c0 0 7.381 11.548 27.451 11.548 21.135 0 35.49-14.673 35.49-35.695 0-19.557-13.186-35.286-35.456-35.286-20.854 0-27.334 11.262-27.334 11.262V.1zm38.766 36.753c14.352 0 23.478 10.652 23.478 24.946 0 15.328-10.54 25.355-23.375 25.355-15.318 0-23.581-11.96-23.581-25.219 0-12.354 7.414-25.082 23.478-25.082z" fill="#0064d2"/><path d="M190.645 26.308c-31.812 0-33.852 17.42-33.852 20.203h15.834s.83-10.17 16.926-10.17c10.46 0 18.564 4.788 18.564 13.992v3.276h-18.564c-24.645 0-37.674 7.21-37.674 21.84 0 14.398 12.038 22.233 28.307 22.233 22.171 0 29.313-12.251 29.313-12.251 0 4.872.376 9.674.376 9.674h14.076s-.546-5.952-.546-9.76V52.431c0-21.58-17.407-26.123-32.76-26.123zm17.472 37.129v4.368c0 5.697-3.515 19.86-24.212 19.86-11.333 0-16.192-5.655-16.192-12.216 0-11.935 16.364-12.012 40.404-12.012z" fill="#f5af02"/><path d="M214.879 29.041h17.813l25.565 51.218 25.507-51.218H299.9l-46.46 91.183h-16.925l13.406-25.418z" fill="#86b817"/></svg></a></li>
             </ul>
           </div>
-          <button aria-label="Close popup" class="popup--close" @click="closePopup(entry.id)">×</button>
+          <button id="popup-close" aria-label="Close popup" class="popup--close" @click="closePopup(entry.id)">×</button>
         </l-popup>
         <l-icon
           :iconSize="selectedEntryID == entry.id ? [50,82] : [25,41]"
@@ -58,10 +58,11 @@ import { divIcon as DivIcon, point as Point } from "leaflet";
 import { latLng } from "leaflet";
 import { LIconDefault,LPopup, LIcon, LMap, LTileLayer, LMarker, LControlZoom } from 'vue2-leaflet';
 import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster'
+import * as focusTrap from 'focus-trap'; // ESM
 
 export default {
   name: 'Map',
-  props: ['entries','selectedEntryID', 'userLatLng'],
+  props: ['entries','selectedEntryID', 'userLatLng', 'isLandscape'],
   components: {
     'v-icondefault': LIconDefault,
     LPopup,
@@ -76,7 +77,8 @@ export default {
     return {
       zoom: 12,
       center: latLng(53.7928737,-1.546013),
-      url: 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png',
+      // url: 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png',
+      url: 'https://stamen-tiles.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.png',
     	maxZoom: 24,
     	attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
       scrollWheelZoom: window.self == window.top,
@@ -88,9 +90,10 @@ export default {
       showMap: true,
       mapActive: false,
       currentPopup: null,
+      popupFocusTrap: null,
       clusterOptions: {
         disableClusteringAtZoom: 17,
-        maxClusterRadius: 30,
+        maxClusterRadius: 50,
         spiderLegPolylineOptions: { weight: 6, color: '#aecdeb', opacity: 0.75 },
         // Create our custom cluster icon replacement with the `iconCreateFunction` api
         // See: https://github.com/Leaflet/Leaflet.markercluster#customising-the-clustered-markers
@@ -125,6 +128,8 @@ export default {
       }
     },
     selectedEntryID: function (selectedEntryID) {
+      console.log(selectedEntryID);
+
       if(selectedEntryID) {
         let target = this.$refs[ selectedEntryID ][ 0 ];
         let marker = target.mapObject;
@@ -140,6 +145,14 @@ export default {
           this.$refs.map.mapObject.flyTo(target.latLng, 18);
           this.$refs.map.mapObject.on('zoomend', function () {
             marker.openPopup();
+
+            if(this.popupFocusTrap) {
+              this.popupFocusTrap.deactivate();
+            }
+            else {
+              this.popupFocusTrap = focusTrap.createFocusTrap(marker.getPopup()._container);
+              this.popupFocusTrap.activate();
+            }
           });
 
           this.currentPopup = marker;
@@ -170,14 +183,17 @@ export default {
     },
 
     markerClicked(selectedEntryID) {
+      console.log('marker clicked');
       this.$emit('marker-clicked', selectedEntryID);
     },
 
     closePopup(id) {
       let currentPopup = this.currentPopup;
       this.$refs.map.mapObject.zoomOut(16);
+
       this.$refs.map.mapObject.on('zoomend', ()=> {
         currentPopup.closePopup();
+
         this.$emit('marker-clicked', null);
         this.$refs.map.mapObject.off('zoomend');
       });
@@ -200,8 +216,18 @@ export default {
     }
   }
 
+  .leaflet-container :focus {
+    outline: -webkit-focus-ring-color auto thin !important; /* Fallback for some browsers that don't support `revert`. */
+    outline: revert !important;
+  }
+
 
   .leaflet-marker-icon {
+    &:focus {
+      outline: 3px solid blue !important;
+    }
+  }
+
     // margin-top: -41px !important;
     // margin-left: -12.5px !important;
     // width: 25px !important;
@@ -213,7 +239,6 @@ export default {
     //   margin-top: -82px !important;
     //   margin-left: -25px !important;
     // }
-  }
 
   .marker-cluster,
   .marker-cluster div {
@@ -264,6 +289,8 @@ export default {
 
   .leaflet-popup-content-wrapper {
       max-width: $sidebar-width;
+      border: 1px solid $medium-gray;
+      border-bottom: none;
       position: relative;
       width: 100vw;
       font-size: 1rem !important;
@@ -366,7 +393,7 @@ export default {
 
   @media screen and (orientation: portrait) {
     .leaflet-popup {
-      display: none;
+      // display: none;
     }
   }
 

@@ -62,5 +62,7 @@
 .expand-enter,
 .expand-leave-to {
   opacity: 0;
+  user-select: none;
+  pointer-events: none;
   flex: 0 0 0px !important;
 }
