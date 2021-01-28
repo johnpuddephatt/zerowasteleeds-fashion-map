@@ -5,6 +5,7 @@
     :zoom="zoom"
     :minZoom="12"
     :center="center"
+    :scrollWheelZoom="scrollWheelZoom"
     :options="mapOptions"
     :inertia="true"
     :zoomAnimation="true"
