@@ -92,7 +92,7 @@ export default {
       currentPopup: null,
       popupFocusTrap: null,
       clusterOptions: {
-        disableClusteringAtZoom: 17,
+        disableClusteringAtZoom: 16,
         maxClusterRadius: 50,
         spiderLegPolylineOptions: { weight: 6, color: '#aecdeb', opacity: 0.75 },
         // Create our custom cluster icon replacement with the `iconCreateFunction` api

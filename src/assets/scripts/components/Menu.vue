@@ -35,10 +35,10 @@
 
       <nav class="sidebar--menu" v-show="isLandscape || menuOpen" >
         <template v-for="category in categories"  :class="($route.params.slug && $route.params.slug != category.slug) ? 'contract' : 'expand'">
-          <router-link :to="{ name: 'category', params: { slug: category.slug } }" :ref="category.slug" :tabindex="($route.params.slug && $route.params.slug != category.slug) ? -1 : ''" :key="category.slug" class="sidebar--menu--item" :class="($route.params.slug && $route.params.slug !== category.slug) ? 'contract' : 'expand'">
+          <router-link :to="($route.params.slug && $route.params.slug == category.slug) ? { name: 'app'} : { name: 'category', params: { slug: category.slug } }" :ref="category.slug" :tabindex="($route.params.slug && $route.params.slug != category.slug) ? -1 : ''" :key="category.slug" class="sidebar--menu--item" :class="($route.params.slug && $route.params.slug !== category.slug) ? 'contract' : 'expand'">
               <img class="sidebar--menu--item--icon" :src="category.icon" />
               {{ category.title }}
-              <svg class="sidebar--menu--item--arrow"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 841.89 595.28"><path d="M412.98 119.97l64.25 49.48L623.3 281.97c8.54 6.57 8.54 25.49 0 32.07L477.22 426.55l-64.25 49.48" fill="none" stroke="#bfc1c1" stroke-width="15.527" stroke-miterlimit="10"/></svg>
+              <svg class="sidebar--menu--item--arrow"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 841.89 595.28"><path d="M412.98 119.97l64.25 49.48L623.3 281.97c8.54 6.57 8.54 25.49 0 32.07L477.22 426.55l-64.25 49.48" fill="none" stroke="currentColor" stroke-width="15.527" stroke-miterlimit="10"/></svg>
           </router-link>
           <transition name="expand">
             <router-view v-if="$route.params.slug == category.slug" :key="$route.params.slug" :menuOpen="menuOpen" :isLandscape="isLandscape" :userLatLng="userLatLng" :selectedEntryID="selectedEntryID" @menu-entry-selected="$emit('menu-entry-selected', $event)" @filtered-entries="$emit('filtered-entries', $event)"></router-view>
@@ -112,20 +112,35 @@ export default {
   z-index: 999999;
   position: absolute;
   background-color: white;
-  padding: ms(0) 0 0;
-  width: 100%;
-  height: 100%;
+  padding: 0;
+  // width: 100%;
+  // height: 100%;
   overflow: hidden;
-  top: calc(100% - #{ms(12) - ms(-2)});
-  border-top: ms(-2) solid $brand-blue;
+  top: calc(100% - 11em);
+  border-radius: 0.2em;
+  border: 1px solid $medium-gray;
+
   transition: top 1s ease, z-index 1.5s ease;
   display: flex;
   flex-direction: column;
 
+  left: ms(-2);
+  right: ms(-2);
+  width: auto;
+
+
+  &::before {
+    height: ms(0);
+    content: '';
+    display: block;
+    background-color: $brand-blue;
+    margin-bottom: ms(3);
+  }
+
   &.menu-open {
     overflow-y: auto;
     z-index: 9999999;
-    top: 0;
+    top: ms(-1);
     transition: top 1s ease, z-index 0s ease;
   }
 
@@ -137,7 +152,7 @@ export default {
     height: auto;
     left: ms(1);
     bottom: auto;
-    padding: ms(4) 0 0;
+    padding: 0;
     box-shadow: $box-shadow;
     width: $sidebar-width;
     // max-width: $sidebar-max-width;
@@ -168,7 +183,11 @@ export default {
     display: block;
     width: ms(6);
     height: auto;
-    margin-right: ms(-2);
+    margin-right: ms(-4);
+
+    @media screen and (orientation: landscape) and (min-width: 800px) {
+      margin-right: ms(-2);
+    }
   }
 
   &--title {
@@ -202,7 +221,7 @@ export default {
 
   &--back {
     display: block;
-    color: $dark-gray;
+    color: $gray;
     text-transform: lowercase;
     font-size: ms(-1);
   }
@@ -220,9 +239,10 @@ export default {
       border: 1px solid $medium-gray;
       border-radius: 2em;
       padding: ms(-5) ms(-2);
+      color: $gray;
 
       &::placeholder {
-        color: $gray;
+        color: $new-gray;
       }
 
       &:focus {
@@ -234,11 +254,12 @@ export default {
 
     &--button {
       position: absolute;
-      right: 2px;
-      top: 2px;
+      right: 1px;
+      top: 1px;
       line-height: 1.4;
       background-color: $medium-gray;
-      color: $gray;
+      color: $dark-gray;
+      border: 1px solid $medium-gray;
       border-radius: 2em;
       padding: ms(-4);
       svg {
@@ -325,14 +346,22 @@ export default {
       &.router-link-active {
         background-color: $brand-blue;
 
+        &:hover {
+          background-color: darken($brand-blue, 5%);
+        }
+
         .sidebar--menu--item--icon {
           filter: brightness(0.3);
+        }
+
+        .sidebar--menu--item--arrow {
+          transform: rotate(90deg);
         }
 
       }
 
       &:hover {
-        background-color: $light-blue;
+        background-color: $light-gray;
       }
 
       &--icon {
@@ -348,6 +377,9 @@ export default {
         width: ms(4);
         height: ms(4);
         margin-left: auto;
+        color: $gray;
+        transform-origin: 50% 50%;
+        transition: transform $base-duration $base-timing;
       }
     }
   }
