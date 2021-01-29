@@ -148,7 +148,7 @@ export default {
     display: block;
     overflow-y: auto;
     position: fixed;
-    top: ms(1);
+    top: ms(2);
     height: auto;
     left: ms(1);
     bottom: auto;
@@ -299,7 +299,7 @@ export default {
     flex-direction: column;
 
     @media screen and (orientation: landscape) and (min-width: 800px) {
-      max-height: 60vh;
+      // max-height: 60vh;
     }
 
     &--status::before {
