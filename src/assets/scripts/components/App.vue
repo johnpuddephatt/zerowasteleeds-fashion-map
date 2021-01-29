@@ -34,7 +34,7 @@ export default {
     return {
       userLatLng: [],
       categories: [],
-      entries: null,
+      entries: [],
       selectedEntryID: null,
       errored: false,
       entriesLoaded: false,
