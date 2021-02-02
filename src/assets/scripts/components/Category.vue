@@ -35,14 +35,7 @@ export default {
       this.$emit('filtered-entries', entries)
     },
     selectedEntryID: function (selectedEntryID) {
-      if(selectedEntryID) {
-        let clickedMenuElement = this.$refs[selectedEntryID][0];
-        if(clickedMenuElement) {
-          if(!this.currentlyHovered && (this.isLandscape || this.menuOpen)) {
-            clickedMenuElement.scrollIntoView({behavior: "smooth", block: "center", inline: "center"});
-          }
-        }
-      }
+      this.scrollToSidebarEntry(selectedEntryID);
     },
   },
   computed: {
@@ -108,10 +101,23 @@ export default {
         // dist = dist * 1.609344;
     		return dist;
     	}
+    },
+    scrollToSidebarEntry(selectedEntryID) {
+      if(selectedEntryID && this.$refs[selectedEntryID]) {
+        let clickedMenuElement = this.$refs[selectedEntryID][0];
+        if(clickedMenuElement) {
+          if(!this.currentlyHovered && (this.isLandscape || this.menuOpen)) {
+            clickedMenuElement.scrollIntoView({behavior: "smooth", block: "center", inline: "center"});
+          }
+        }
+      }
     }
   },
   mounted () {
     this.getCategory(this.slug);
+    if(this.selectedEntryID) {
+      this.scrollToSidebarEntry(this.selectedEntryID);
+    }
   }
 }
 </script>

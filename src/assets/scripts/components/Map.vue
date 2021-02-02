@@ -3,7 +3,6 @@
     id="map"
     ref="map"
     :zoom="zoom"
-    :minZoom="12"
     :center="center"
     :options="mapOptions"
     :inertia="true"
@@ -14,9 +13,11 @@
     <l-control-zoom :position="isLandscape ? 'bottomright' : 'topright'" />
     <l-tile-layer :url="url" :attribution="attribution" />
     <v-icondefault :image-path="'/assets/images/'"></v-icondefault>
-    <v-marker-cluster ref="cluster" :options="clusterOptions">
-      <l-marker :ref="entry.id" v-for="entry in entriesWithLatLng" :key="entry.id" :lat-lng="getLatLng(entry)" @keyup.enter="markerClicked(entry.id)" @click="markerClicked(entry.id)">
-        <l-popup :options="{offset: [0, -34], closeButton: false}">
+    <!-- <v-marker-cluster ref="cluster" :options="clusterOptions"> -->
+      <!-- <l-marker :ref="entry.id" v-for="entry in entriesWithLatLng" :key="entry.id" :lat-lng="getLatLng(entry)" @keyup.enter="markerClicked(entry.id)" @click="markerClicked(entry.id)"> -->
+    <v-marker-cluster :options="clusterOptions">
+      <l-marker :ref="entry.id" v-for="entry in entriesWithLatLng" :key="entry.id" :lat-lng="getLatLng(entry)" @click="markerClicked(entry.id)" @keyup.enter="markerClicked(entry.id)" >
+        <l-popup :ref="`popup-${entry.id}`" :options="{offset: [0, -34], closeButton: true}">
           <div class="popup-header">
             <p>{{ entry.category}}</p>
             <h3 class="entry-title" v-html="entry.name"></h3>
@@ -36,16 +37,21 @@
               <li v-if="entry.ebay"><a class="entry-social entry-social__ebay" :href="entry.ebay" title="eBay" aria-label="eBay" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 120.324" width="300" height="120.324"><path d="M38.866 26.308C17.721 26.308.1 35.28.1 62.345c0 21.442 11.849 34.944 39.312 34.944 32.327 0 34.399-21.294 34.399-21.294H58.147s-3.358 11.466-19.69 11.466c-13.302 0-22.87-8.986-22.87-21.58H75.45v-7.904c0-12.46-7.91-31.669-36.583-31.669zM38.32 36.41c12.663 0 21.295 7.758 21.295 19.384h-43.68c0-12.343 11.266-19.384 22.385-19.384z" fill="#e53238"/><path d="M75.438.1v83.597c0 4.745-.339 11.408-.339 11.408h14.94s.536-4.785.536-9.159c0 0 7.381 11.548 27.451 11.548 21.135 0 35.49-14.673 35.49-35.695 0-19.557-13.186-35.286-35.456-35.286-20.854 0-27.334 11.262-27.334 11.262V.1zm38.766 36.753c14.352 0 23.478 10.652 23.478 24.946 0 15.328-10.54 25.355-23.375 25.355-15.318 0-23.581-11.96-23.581-25.219 0-12.354 7.414-25.082 23.478-25.082z" fill="#0064d2"/><path d="M190.645 26.308c-31.812 0-33.852 17.42-33.852 20.203h15.834s.83-10.17 16.926-10.17c10.46 0 18.564 4.788 18.564 13.992v3.276h-18.564c-24.645 0-37.674 7.21-37.674 21.84 0 14.398 12.038 22.233 28.307 22.233 22.171 0 29.313-12.251 29.313-12.251 0 4.872.376 9.674.376 9.674h14.076s-.546-5.952-.546-9.76V52.431c0-21.58-17.407-26.123-32.76-26.123zm17.472 37.129v4.368c0 5.697-3.515 19.86-24.212 19.86-11.333 0-16.192-5.655-16.192-12.216 0-11.935 16.364-12.012 40.404-12.012z" fill="#f5af02"/><path d="M214.879 29.041h17.813l25.565 51.218 25.507-51.218H299.9l-46.46 91.183h-16.925l13.406-25.418z" fill="#86b817"/></svg></a></li>
             </ul>
           </div>
-          <button id="popup-close" aria-label="Close popup" class="popup--close" @click="closePopup(entry.id)">×</button>
+          <!-- <button id="popup-close" aria-label="Close popup" class="popup--close" @click="markerClicked(null)" @keyup.enter="markerClicked(null)">×</button> -->
         </l-popup>
         <l-icon
-          :iconSize="selectedEntryID == entry.id ? [50,82] : [25,41]"
-          :icon-anchor="selectedEntryID == entry.id ? [25,82] : [12.5,41]"
-          :popupAnchor="[0,-37]"
-          :className="selectedEntryID == entry.id ? 'large' : ''"
-          :icon-url="selectedEntryID == entry.id ? '/assets/images/marker-icon-red.svg' : '/assets/images/marker-icon.svg'"
-          :iconRetinaUrl="selectedEntryID == entry.id ? '/assets/images/marker-icon-red.svg' : '/assets/images/marker-icon.svg'"
+
+          :popupAnchor="[0,20]"
+          :iconSize="[30,48]"
+          icon-url="/assets/images/marker-icon-red.svg"
+
            />
+         <!--
+         :iconSize="selectedEntryID == entry.id ? [50,82] : [25,41]"
+         :className="selectedEntryID == entry.id ? 'large' : ''"
+         :icon-anchor="selectedEntryID == entry.id ? [25,82] : [12.5,41]"
+         :icon-url="selectedEntryID == entry.id ? '/assets/images/marker-icon-red.svg' : '/assets/images/marker-icon.svg'"
+         :iconRetinaUrl="selectedEntryID == entry.id ? '/assets/images/marker-icon-red.svg' : '/assets/images/marker-icon.svg'" -->
       </l-marker>
     </v-marker-cluster>
   </l-map>
@@ -58,11 +64,11 @@ import { divIcon as DivIcon, point as Point } from "leaflet";
 import { latLng } from "leaflet";
 import { LIconDefault,LPopup, LIcon, LMap, LTileLayer, LMarker, LControlZoom } from 'vue2-leaflet';
 import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster'
-import * as focusTrap from 'focus-trap'; // ESM
+import * as focusTrap from 'focus-trap';
 
 export default {
   name: 'Map',
-  props: ['entries','selectedEntryID', 'userLatLng', 'isLandscape'],
+  props: ['entries', 'selectedEntryID', 'userLatLng', 'isLandscape'],
   components: {
     'v-icondefault': LIconDefault,
     LPopup,
@@ -92,11 +98,10 @@ export default {
       currentPopup: null,
       popupFocusTrap: null,
       clusterOptions: {
-        disableClusteringAtZoom: 16,
-        maxClusterRadius: 50,
-        spiderLegPolylineOptions: { weight: 6, color: '#aecdeb', opacity: 0.75 },
-        // Create our custom cluster icon replacement with the `iconCreateFunction` api
-        // See: https://github.com/Leaflet/Leaflet.markercluster#customising-the-clustered-markers
+        disableClusteringAtZoom: 18,
+        // maxClusterRadius: 50,
+        // spiderLegPolylineOptions: { weight: 6, color: '#aecdeb', opacity: 0.75 },
+
         iconCreateFunction: cluster => {
           var childCount = cluster.getChildCount();
 
@@ -116,51 +121,70 @@ export default {
   },
   watch: {
     userLatLng: function() {
-      if(this.userLatLng && this.userLatLng.length) {
-        this.$refs.map.mapObject.flyTo(latLng(this.userLatLng[0],this.userLatLng[1]), 14);
-      } else {
-        this.$refs.map.mapObject.flyTo(this.center, 12);
-      }
+      this.recenterMap();
     },
+
     $route (to, from) {
       if(to.name == 'app') {
-        this.$refs.map.mapObject.zoomOut(6);
+        this.recenterMap();
       }
     },
-    selectedEntryID: function (selectedEntryID) {
-      console.log(selectedEntryID);
 
-      if(selectedEntryID) {
-        let target = this.$refs[ selectedEntryID ][ 0 ];
-        let marker = target.mapObject;
-        marker.closePopup(selectedEntryID);
+    selectedEntryID: function (newID, oldID) {
 
-        if(target) {
+      if(!this.mapActive) {
 
-          if(!this.$route.params.slug) {
-            let categorySlug = this.entries.filter(item => item.id == selectedEntryID)[0].category;
-            this.$router.push({ name: 'category', params: { slug: categorySlug } })
-          }
+        this.$refs.map.mapObject.flyTo(this.$refs[ newID ][ 0 ].latLng, 18);
 
-          this.$refs.map.mapObject.flyTo(target.latLng, 18);
-          this.$refs.map.mapObject.on('zoomend', function () {
-            marker.openPopup();
+        this.$refs.map.mapObject.once('moveend', () => {
+          this.$refs[ newID ][ 0 ].mapObject.openPopup();
+        });
 
-            if(this.popupFocusTrap) {
-              this.popupFocusTrap.deactivate();
-            }
-            else {
-              this.popupFocusTrap = focusTrap.createFocusTrap(marker.getPopup()._container);
-              this.popupFocusTrap.activate();
-            }
-          });
-
-          this.currentPopup = marker;
-        }
       }
-      else {
-        this.$refs.map.mapObject.zoomOut(3);
+
+      if(!this.$route.params.slug) {
+        let categorySlug = this.entries.filter(item => item.id == newID)[0].category;
+        this.$router.push({ name: 'category', params: { slug: categorySlug } })
       }
+
+      // if(oldID) {
+      //   let oldTarget = this.$refs[ oldID ][ 0 ];
+      //   let oldMarker = oldTarget.mapObject;
+      //   oldMarker.closePopup(oldID);
+      // }
+      //
+      // if(newID) {
+      //   let target = this.$refs[ newID ][ 0 ];
+      //   let marker = target.mapObject;
+      //
+      //   if(target) {
+      //
+      //     if(!this.$route.params.slug) {
+      //       let categorySlug = this.entries.filter(item => item.id == newID)[0].category;
+      //       this.$router.push({ name: 'category', params: { slug: categorySlug } })
+      //     }
+      //
+      //     this.$refs.map.mapObject.flyTo(target.latLng, 18);
+      //
+      //     marker.openPopup();
+      //
+      //     if(this.popupFocusTrap) {
+      //       this.popupFocusTrap.deactivate();
+      //     }
+      //
+      //     else {
+      //       this.popupFocusTrap = focusTrap.createFocusTrap(marker.getPopup()._container);
+      //       this.popupFocusTrap.activate();
+      //     }
+      //
+      //     this.currentPopup = marker;
+      //   }
+      // }
+      // else {
+      //   console.log('null currentPopup and zoom out');
+      //   this.currentPopup = null;
+      //   this.$refs.map.mapObject.zoomOut(4);
+      // }
     }
   },
   methods: {
@@ -183,21 +207,43 @@ export default {
     },
 
     markerClicked(selectedEntryID) {
-      console.log('marker clicked');
       this.$emit('marker-clicked', selectedEntryID);
     },
 
-    closePopup(id) {
-      let currentPopup = this.currentPopup;
-      this.$refs.map.mapObject.zoomOut(16);
-
-      this.$refs.map.mapObject.on('zoomend', ()=> {
-        currentPopup.closePopup();
-
-        this.$emit('marker-clicked', null);
-        this.$refs.map.mapObject.off('zoomend');
-      });
+    recenterMap() {
+      if(this.userLatLng && this.userLatLng.length) {
+        this.$refs.map.mapObject.flyTo(latLng(this.userLatLng[0],this.userLatLng[1]), 14);
+      } else {
+        this.$refs.map.mapObject.flyTo(this.center, 12);
+      }
     }
+
+    // closePopup(id) {
+    //     this.$emit('marker-clicked', null);
+        // let currentPopup = this.currentPopup;
+        // setTimeout(()=> {
+        //   currentPopup.closePopup();
+        // },500);
+
+
+      // let currentPopup = this.currentPopup;
+      // this.$refs.map.mapObject.zoomOut(2);
+      //
+      // if(currentPopup) {
+      //   setTimeout(()=> {
+      //     currentPopup.closePopup();
+      //   },500);
+      //
+      // }
+      // this.$refs.map.mapObject.on('zoomend', ()=> {
+      //   if(currentPopup) {
+      //     currentPopup.closePopup();
+      //   }
+      //
+      //   this.$emit('marker-clicked', null);
+      //   this.$refs.map.mapObject.off('zoomend');
+      // });
+    // }
   },
 }
 </script>
@@ -223,6 +269,7 @@ export default {
 
 
   .leaflet-marker-icon {
+
     &:focus {
       outline: 3px solid blue !important;
     }
@@ -281,11 +328,18 @@ export default {
 
 
   // Popup
-  .leaflet-container a.leaflet-popup-close-button {
-    width: 30px;
-    height: 24px;
-    font: 30px/17px Tahoma, Verdana, sans-serif;
+  // .leaflet-container a.leaflet-popup-close-button {
+
+  // }
+
+  .leaflet-popup-close-button {
+    top: ms(0) !important;
+    right: ms(0) !important;
+    width: auto !important;
+    height: auto !important;
+    font: 30px/17px Tahoma, Verdana, sans-serif !important;
   }
+
 
   .leaflet-popup-content-wrapper {
       max-width: $sidebar-width;
