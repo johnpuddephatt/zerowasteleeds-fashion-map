@@ -67,7 +67,7 @@ export default {
     display: none;
   }
 
-  border-top: ms(-2) solid $brand-blue;
+  border-top: ms(-2) solid $brand-green;
   position: fixed;
   z-index: 999999;
   background-color: white;

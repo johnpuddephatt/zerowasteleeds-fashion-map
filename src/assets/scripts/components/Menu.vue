@@ -130,7 +130,7 @@ export default {
 
 
   &::before {
-    height: ms(0);
+    height: ms(-2);
     content: '';
     display: block;
     background-color: $brand-blue;
@@ -239,7 +239,6 @@ export default {
       border: 1px solid $medium-gray;
       border-radius: 2em;
       padding: ms(-5) ms(-2);
-      color: $gray;
 
       &::placeholder {
         color: $new-gray;
@@ -257,8 +256,8 @@ export default {
       right: 1px;
       top: 1px;
       line-height: 1.4;
-      background-color: $medium-gray;
-      color: $dark-gray;
+      background-color: $brand-blue;
+      color: white;
       border: 1px solid $medium-gray;
       border-radius: 2em;
       padding: ms(-4);
@@ -298,22 +297,6 @@ export default {
     display: flex;
     flex-direction: column;
 
-    @media screen and (orientation: landscape) and (min-width: 800px) {
-      // max-height: 60vh;
-    }
-
-    &--status::before {
-      background-image: url(/assets/images/eye-icon.svg);
-    }
-
-    &--comments::before {
-      background-image: url(/assets/images/comment-icon.svg);
-    }
-
-    &--photos::before {
-      background-image: url(/assets/images/camera-icon.svg);
-    }
-
     &--item {
       overflow: hidden;
       display: flex;
@@ -344,14 +327,15 @@ export default {
       }
 
       &.router-link-active {
-        background-color: $brand-blue;
+        background-color: $brand-green;
 
         &:hover {
-          background-color: darken($brand-blue, 5%);
+          background-color: darken($brand-green, 5%);
         }
 
         .sidebar--menu--item--icon {
-          filter: brightness(0.3);
+          filter: brightness(0.5);
+          opacity: 0.7;
         }
 
         .sidebar--menu--item--arrow {
@@ -371,6 +355,7 @@ export default {
         object-position: center;
         display: block;
         margin-right: ms(1);
+        color: $brand-light-blue;
       }
 
       &--arrow {

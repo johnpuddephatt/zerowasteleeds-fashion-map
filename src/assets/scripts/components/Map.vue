@@ -40,18 +40,17 @@
           <!-- <button id="popup-close" aria-label="Close popup" class="popup--close" @click="markerClicked(null)" @keyup.enter="markerClicked(null)">×</button> -->
         </l-popup>
         <l-icon
-
           :popupAnchor="[0,20]"
-          :iconSize="[30,48]"
+          :iconSize="[35,53]"
           icon-url="/assets/images/marker-icon-red.svg"
-
-           />
-         <!--
-         :iconSize="selectedEntryID == entry.id ? [50,82] : [25,41]"
-         :className="selectedEntryID == entry.id ? 'large' : ''"
-         :icon-anchor="selectedEntryID == entry.id ? [25,82] : [12.5,41]"
-         :icon-url="selectedEntryID == entry.id ? '/assets/images/marker-icon-red.svg' : '/assets/images/marker-icon.svg'"
-         :iconRetinaUrl="selectedEntryID == entry.id ? '/assets/images/marker-icon-red.svg' : '/assets/images/marker-icon.svg'" -->
+        />
+        <!--
+        :iconSize="selectedEntryID == entry.id ? [50,82] : [25,41]"
+        :className="selectedEntryID == entry.id ? 'large' : ''"
+        :icon-anchor="selectedEntryID == entry.id ? [25,82] : [12.5,41]"
+        :icon-url="selectedEntryID == entry.id ? '/assets/images/marker-icon-red.svg' : '/assets/images/marker-icon.svg'"
+        :iconRetinaUrl="selectedEntryID == entry.id ? '/assets/images/marker-icon-red.svg' : '/assets/images/marker-icon.svg'"
+        -->
       </l-marker>
     </v-marker-cluster>
   </l-map>
@@ -83,8 +82,12 @@ export default {
     return {
       zoom: 12,
       center: latLng(53.7928737,-1.546013),
+      // url: 'https://stamen-tiles.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.png',
       // url: 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png',
-      url: 'https://stamen-tiles.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.png',
+      // url: 'https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png',
+      // url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+      url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+
     	maxZoom: 24,
     	attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
       mapOptions: {
@@ -99,8 +102,8 @@ export default {
       popupFocusTrap: null,
       clusterOptions: {
         disableClusteringAtZoom: 18,
+        spiderLegPolylineOptions: { weight: 6, color: '#efbfd3', opacity: 0.75 },
         // maxClusterRadius: 50,
-        // spiderLegPolylineOptions: { weight: 6, color: '#aecdeb', opacity: 0.75 },
 
         iconCreateFunction: cluster => {
           var childCount = cluster.getChildCount();
@@ -133,58 +136,16 @@ export default {
     selectedEntryID: function (newID, oldID) {
 
       if(!this.mapActive) {
-
         this.$refs.map.mapObject.flyTo(this.$refs[ newID ][ 0 ].latLng, 18);
-
         this.$refs.map.mapObject.once('moveend', () => {
           this.$refs[ newID ][ 0 ].mapObject.openPopup();
         });
-
       }
 
       if(!this.$route.params.slug) {
         let categorySlug = this.entries.filter(item => item.id == newID)[0].category;
         this.$router.push({ name: 'category', params: { slug: categorySlug } })
       }
-
-      // if(oldID) {
-      //   let oldTarget = this.$refs[ oldID ][ 0 ];
-      //   let oldMarker = oldTarget.mapObject;
-      //   oldMarker.closePopup(oldID);
-      // }
-      //
-      // if(newID) {
-      //   let target = this.$refs[ newID ][ 0 ];
-      //   let marker = target.mapObject;
-      //
-      //   if(target) {
-      //
-      //     if(!this.$route.params.slug) {
-      //       let categorySlug = this.entries.filter(item => item.id == newID)[0].category;
-      //       this.$router.push({ name: 'category', params: { slug: categorySlug } })
-      //     }
-      //
-      //     this.$refs.map.mapObject.flyTo(target.latLng, 18);
-      //
-      //     marker.openPopup();
-      //
-      //     if(this.popupFocusTrap) {
-      //       this.popupFocusTrap.deactivate();
-      //     }
-      //
-      //     else {
-      //       this.popupFocusTrap = focusTrap.createFocusTrap(marker.getPopup()._container);
-      //       this.popupFocusTrap.activate();
-      //     }
-      //
-      //     this.currentPopup = marker;
-      //   }
-      // }
-      // else {
-      //   console.log('null currentPopup and zoom out');
-      //   this.currentPopup = null;
-      //   this.$refs.map.mapObject.zoomOut(4);
-      // }
     }
   },
   methods: {
@@ -217,33 +178,6 @@ export default {
         this.$refs.map.mapObject.flyTo(this.center, 12);
       }
     }
-
-    // closePopup(id) {
-    //     this.$emit('marker-clicked', null);
-        // let currentPopup = this.currentPopup;
-        // setTimeout(()=> {
-        //   currentPopup.closePopup();
-        // },500);
-
-
-      // let currentPopup = this.currentPopup;
-      // this.$refs.map.mapObject.zoomOut(2);
-      //
-      // if(currentPopup) {
-      //   setTimeout(()=> {
-      //     currentPopup.closePopup();
-      //   },500);
-      //
-      // }
-      // this.$refs.map.mapObject.on('zoomend', ()=> {
-      //   if(currentPopup) {
-      //     currentPopup.closePopup();
-      //   }
-      //
-      //   this.$emit('marker-clicked', null);
-      //   this.$refs.map.mapObject.off('zoomend');
-      // });
-    // }
   },
 }
 </script>
@@ -271,7 +205,7 @@ export default {
   .leaflet-marker-icon {
 
     &:focus {
-      outline: 3px solid blue !important;
+      outline: 3px solid $brand-green !important;
     }
   }
 
@@ -311,17 +245,17 @@ export default {
   }
 
   .my-marker-cluster-small {
-    background-color: lighten($brand-blue,10%);
+    background-color: lighten($brand-pink,5%);
     box-shadow: 9px 9px 12px -7px rgba(0,0,0,0.25) !important;
   }
 
   .my-marker-cluster-medium {
-    background-color: $brand-blue;
+    background-color: $brand-pink;
     box-shadow: 9px 9px 12px -7px rgba(0,0,0,0.25) !important;
   }
 
   .my-marker-cluster-large {
-    background-color: darken($brand-blue,25%);
+    background-color: darken($brand-pink,10%);
     box-shadow: 9px 9px 12px -7px rgba(0,0,0,0.25) !important;
   }
 

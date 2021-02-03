@@ -169,7 +169,17 @@ export default {
     }
 
     &.selected {
-      border-left-color: $black;
+      border-top: none;
+      border-bottom: none;
+      border-left-color: $brand-green;
+      background-color: transparentize($brand-green, 0.85);
+
+      .category-panel--entry--location {
+        background-color: $brand-green;
+        color: white;
+      }
+
+
     }
   }
 }
