@@ -6,12 +6,12 @@ mix.setPublicPath('.');
 //mix.setResourceRoot('_site');
 
 
-const outputDir = 'dist';
+const outputDir = 'src/_compiled';
 
-mix.js('src/assets/scripts/main.js', outputDir+'/assets/scripts/')
+mix.js('src/assets/scripts/main.js', outputDir+'/scripts/')
     .sourceMaps()
     .vue()
-    .sass('src/assets/styles/main.scss', outputDir+'/assets/styles/')
+    .sass('src/assets/styles/main.scss', outputDir+'/styles/')
     .options({
       extractVueStyles: true
     });

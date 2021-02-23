@@ -1,6 +1,6 @@
 {
-    "/dist/assets/scripts/main.js": "/dist/assets/scripts/main.js?id=af5ab77c30a048c1bf1e",
-    "/dist/assets/scripts/manifest.js": "/dist/assets/scripts/manifest.js?id=804566be516b7c9e1896",
-    "/dist/assets/styles/main.css": "/dist/assets/styles/main.css?id=dc10f80c04eabf3bda77",
-    "/dist/assets/scripts/vendor.js": "/dist/assets/scripts/vendor.js?id=1fa75ff3c77f5a0f9263"
+    "/src/_compiled/scripts/main.js": "/src/_compiled/scripts/main.js?id=cc945e4eb454e6589cf9",
+    "/src/_compiled/scripts/manifest.js": "/src/_compiled/scripts/manifest.js?id=a5ec4a48982ba3d67877",
+    "/src/_compiled/styles/main.css": "/src/_compiled/styles/main.css?id=dc10f80c04eabf3bda77",
+    "/src/_compiled/scripts/vendor.js": "/src/_compiled/scripts/vendor.js?id=d66b1f6ea81c388c622a"
 }
