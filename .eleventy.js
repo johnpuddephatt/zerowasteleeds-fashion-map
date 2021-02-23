@@ -60,14 +60,17 @@ module.exports = function (config) {
     // config.addLayoutAlias('vue', 'layouts/vue.njk');
 
     // Pass-through files
-    config.addPassthroughCopy('src/_assets')
+
     config.addPassthroughCopy('src/robots.txt')
     config.addPassthroughCopy('src/assets/images')
     config.addPassthroughCopy('src/assets/fonts')
     config.addPassthroughCopy({'src/data/site.json' : 'api/site.json'})
     config.addPassthroughCopy({'src/data/categories.json' : 'api/categories.json'})
     config.addPassthroughCopy({ "./src/favicons/**/*": "./" });
+    config.addPassthroughCopy('src/assets/images')
 
+    config.addPassthroughCopy('src/assets/fonts')
+    config.addPassthroughCopy({'src/_compiled' : 'assets'})
 
     // Deep-Merge
     config.setDataDeepMerge(true)
