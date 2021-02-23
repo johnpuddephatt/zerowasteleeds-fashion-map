@@ -37,8 +37,7 @@ const router = new VueRouter({
 })
 
 Vue.use(VueGtag, {
-  config: { id: 'UA-48108307-2' },
-  disableScriptLoad: true
+  config: { id: 'G-7WSGEPWFEE' }
 }, router)
 
 const app = new Vue({
