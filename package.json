@@ -8,7 +8,7 @@
     "axios": "^0.19.2",
     "focus-trap": "^6.3.0",
     "leaflet": "^1.7.1",
-    "vue": "^2.6.11",
+    "vue": "^2.6.12",
     "vue-gtag": "^1.10.0",
     "vue-router": "^3.3.4",
     "vue2-leaflet": "^2.5.2",
