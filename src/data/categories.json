@@ -6,8 +6,8 @@
     "icon": "/assets/images/charity-shop-icon.svg"
   },
   {
-    "slug": "charity-textile-banks",
-    "title": "Charity textile banks",
+    "slug": "textile-banks",
+    "title": "Textile banks",
     "sheet_number": 2,
     "icon": "/assets/images/charity-textile-banks-icon.svg"
   },
@@ -24,21 +24,15 @@
     "icon": "/assets/images/clothes-exchanges-icon.svg"
   },
   {
-    "slug": "council-textile-banks",
-    "title": "Council textile banks",
-    "sheet_number": 5,
-    "icon": "/assets/images/council-textile-banks-icon.svg"
-  },
-  {
     "slug": "sewing-workshops",
     "title": "Sewing workshops",
-    "sheet_number": 6,
+    "sheet_number": 5,
     "icon": "/assets/images/sewing-workshops-icon.svg"
   },
   {
     "slug": "sustainable-fashion-designers",
     "title": "Sustainable fashion designers",
-    "sheet_number": 7,
+    "sheet_number": 6,
     "icon": "/assets/images/sustainable-fashion-designers-icon.svg"
   }
 ]
