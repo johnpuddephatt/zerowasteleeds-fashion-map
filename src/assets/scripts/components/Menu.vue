@@ -13,7 +13,7 @@
       <router-link class="sidebar--back" :to="{ name: 'app'}" v-if="$route.name != 'app'">« Back to categories</router-link>
       <span class="sidebar--back" v-else>{{ entryCount }} entries loaded</span>
 
-      <div class="sidebar--postcode" v-if="!latLng.length">
+      <div class="sidebar--postcode" v-if="!latLng.length && $route.name != 'app'">
         <label for="postcode" class="sr-only">Postcode</label>
         <input @keyup.enter="convertPostcodeToLatLng" placeholder="Enter postcode" id="postcode" class="sidebar--postcode--input" type="text" v-model="postcode">
         <button class="sidebar--postcode--button" @click="convertPostcodeToLatLng" aria-label="Search">
@@ -22,7 +22,7 @@
           </svg>
         </button>
       </div>
-      <div v-else class="sidebar--postcode">
+      <div v-else-if="$route.name != 'app'" class="sidebar--postcode">
         <div class="sidebar--postcode--badge">
           Near to {{ postcode }}
           <button class="sidebar--postcode--clear" @click="clearPostcode" aria-label="Clear postcode">✕</button>

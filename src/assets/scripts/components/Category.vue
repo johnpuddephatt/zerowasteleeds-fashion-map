@@ -1,7 +1,7 @@
 <template>
     <div class="category-panel" @mouseleave="currentlyHovered = null">
       <template v-for="entry in entriesSortedByDistance">
-        <div class="category-panel--type" v-if="entry.type && newType(entry.type)">{{ entry.type }}</div>
+        <div class="category-panel--type" v-if="!userLatLng.length && entry.type && newType(entry.type)">{{ entry.type }}</div>
         <button class="category-panel--entry" :class="{selected: (entry.id == selectedEntryID)}" :key="entry.id" :ref="entry.id" @keyup.enter="$emit('menu-entry-selected',entry.id)" @click="$emit('menu-entry-selected',entry.id)">
           <div class="category-panel--entry--text">
             <span class="category-panel--entry--type">{{ entry.type }}</span>
