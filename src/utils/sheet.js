@@ -42,6 +42,7 @@ module.exports = (sheetID, documentID, categoryTitle, compact) => {
 
               if (!compact) {
                 row.category = categoryTitle;
+                row.type = item.gsx$type?.$t;
                 row.description = item.gsx$description?.$t;
                 row.address = item.gsx$address?.$t;
                 row.postcode = item.gsx$postcode?.$t;

@@ -1,10 +1,16 @@
 <template>
     <div class="category-panel" @mouseleave="currentlyHovered = null">
-      <button class="category-panel--entry" :class="{selected: (entry.id == selectedEntryID)}" v-for="entry in entriesSortedByDistance" :key="entry.id" :ref="entry.id" @keyup.enter="$emit('menu-entry-selected',entry.id)" @click="$emit('menu-entry-selected',entry.id)">
-        <h3 class="category-panel--entry--title" >{{ entry.name }}</h3>
-        <span class="category-panel--entry--location" v-if="entry.distance">{{ entry.distance }} miles</span>
-        <span class="category-panel--entry--location" v-else-if="entry.postcode">{{ entry.postcode }}</span>
-      </button>
+      <template v-for="entry in entriesSortedByDistance">
+        <div class="category-panel--type" v-if="entry.type && newType(entry.type)">{{ entry.type }}</div>
+        <button class="category-panel--entry" :class="{selected: (entry.id == selectedEntryID)}" :key="entry.id" :ref="entry.id" @keyup.enter="$emit('menu-entry-selected',entry.id)" @click="$emit('menu-entry-selected',entry.id)">
+          <div class="category-panel--entry--text">
+            <span class="category-panel--entry--type">{{ entry.type }}</span>
+            <h3 class="category-panel--entry--title">{{ entry.name }}</h3>
+          </div>
+          <span class="category-panel--entry--location" v-if="entry.distance">{{ entry.distance }} miles</span>
+          <span class="category-panel--entry--location" v-else-if="entry.postcode">{{ entry.postcode }}</span>
+        </button>
+      </template>
     </div>
 </template>
 
@@ -21,7 +27,8 @@ export default {
     return {
       entries: [],
       currentlyHovered: null,
-      categoryLoaded: false
+      categoryLoaded: false,
+      currentCategoryHeading: null
     }
   },
   watch: {
@@ -64,6 +71,11 @@ export default {
     }
   },
   methods: {
+    newType(type) {
+      let compareMe = this.currentTypeHeading;
+      this.currentTypeHeading = type;
+      return type != compareMe
+    },
     distanceFromUserLatLng: function(entry) {
       let distance = this.distance(entry.latitude,entry.longitude, this.userLatLng[0], this.userLatLng[1]);
       return Math.round(distance * 10) / 10;
@@ -129,6 +141,13 @@ export default {
   flex: 1 1 60vh;
   overflow-y: auto;
 
+  &--type {
+    background-color: $brand-blue;
+    color: white;
+    padding: ms(-6) ms(2);
+
+  }
+
   &--entry {
     width: 100%;
     display: flex;
@@ -150,16 +169,33 @@ export default {
       }
     }
 
-    &--title {
-      text-transform: capitalize;
-      flex: 1;
+    &--text {
       overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      flex: 1;
       margin-right: auto;
     }
 
+    &--title {
+      text-transform: capitalize;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &--type {
+      font-size: ms(-2);
+      color: $gray;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: -ms(0);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+    }
+
     &--location {
+      white-space: nowrap;
+      margin-top: auto;
       font-size: ms(-1);
       margin-left: ms(-1);
       background-color: $light-gray;

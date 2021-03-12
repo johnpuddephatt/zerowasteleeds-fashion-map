@@ -12,10 +12,10 @@
     "icon": "/assets/images/charity-textile-banks-icon.svg"
   },
   {
-  "slug": "alterations-and-repairs",
-  "title": "Alterations and repairs",
-  "sheet_number": 3,
-  "icon": "/assets/images/alterations-and-repairs-icon.svg"
+    "slug": "alterations-and-repairs",
+    "title": "Alterations and repairs",
+    "sheet_number": 3,
+    "icon": "/assets/images/alterations-and-repairs-icon.svg"
   },
   {
     "slug": "clothes-exchanges",
@@ -24,14 +24,14 @@
     "icon": "/assets/images/clothes-exchanges-icon.svg"
   },
   {
-    "slug": "sewing-workshops",
-    "title": "Sewing workshops",
+    "slug": "sewing",
+    "title": "Sewing",
     "sheet_number": 5,
     "icon": "/assets/images/sewing-workshops-icon.svg"
   },
   {
     "slug": "sustainable-fashion-designers",
-    "title": "Sustainable fashion designers",
+    "title": "Sustainable designers",
     "sheet_number": 6,
     "icon": "/assets/images/sustainable-fashion-designers-icon.svg"
   }
