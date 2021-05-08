@@ -50,6 +50,10 @@ export default {
     }
   },
   mounted () {
+    setTimeout(()=>{
+      this.$forceUpdate();
+    }, 3000);
+
     axios
       .get('/api/site.json')
       .then(response => {

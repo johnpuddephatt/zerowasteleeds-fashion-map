@@ -294,8 +294,8 @@ export default {
 
   &--menu {
     flex: 1;
-    display: flex;
     flex-direction: column;
+    display: flex;
 
     &--item {
       overflow: hidden;
