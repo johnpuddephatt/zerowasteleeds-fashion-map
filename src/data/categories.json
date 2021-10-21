@@ -2,37 +2,37 @@
   {
     "slug": "charity-shops",
     "title": "Charity shops",
-    "sheet_number": 1,
+    "sheet_number": "Charity%20shops",
     "icon": "/assets/images/charity-shop-icon.svg"
   },
   {
     "slug": "textile-banks",
     "title": "Textile banks",
-    "sheet_number": 2,
+    "sheet_number": "Textile%20banks",
     "icon": "/assets/images/charity-textile-banks-icon.svg"
   },
   {
     "slug": "alterations-and-repairs",
     "title": "Alterations and repairs",
-    "sheet_number": 3,
+    "sheet_number": "Clothes%20and%20Shoes%20Alterations%20and%20Repair",
     "icon": "/assets/images/alterations-and-repairs-icon.svg"
   },
   {
     "slug": "clothes-exchanges",
     "title": "Clothes exchanges",
-    "sheet_number": 4,
+    "sheet_number": "Clothes%20Exchanges",
     "icon": "/assets/images/clothes-exchanges-icon.svg"
   },
   {
     "slug": "sewing",
     "title": "Sewing",
-    "sheet_number": 5,
+    "sheet_number": "Sewing",
     "icon": "/assets/images/sewing-workshops-icon.svg"
   },
   {
     "slug": "sustainable-fashion-designers",
     "title": "Sustainable designers",
-    "sheet_number": 6,
+    "sheet_number": "Sustainable%20Fashion%20Designers",
     "icon": "/assets/images/sustainable-fashion-designers-icon.svg"
   }
 ]

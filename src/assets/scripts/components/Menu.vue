@@ -4,57 +4,147 @@
       <img class="sidebar--logo" src="/assets/images/t-shirt.svg" />
       <div>
         <h1 class="sidebar--subtitle">Zero Waste Leeds</h1>
-        <h2 class="sidebar--title">Leeds Fashion Map</h2>
+        <h2 class="sidebar--title">Zero Waste Clothing</h2>
       </div>
-      <button class="button sidebar--header--button" v-if="!isLandscape" @click="menuOpen = !menuOpen" v-html="menuOpen ? 'Show map' : 'Show list'"></button>
+      <button
+        class="button sidebar--header--button"
+        v-if="!isLandscape"
+        @click="menuOpen = !menuOpen"
+        v-html="menuOpen ? 'Show map' : 'Show list'"
+      ></button>
     </div>
 
     <div class="sidebar--controls">
-      <router-link class="sidebar--back" :to="{ name: 'app'}" v-if="$route.name != 'app'">« Back to categories</router-link>
+      <router-link
+        class="sidebar--back"
+        :to="{ name: 'app' }"
+        v-if="$route.name != 'app'"
+        >« Back to categories</router-link
+      >
       <span class="sidebar--back" v-else>{{ entryCount }} entries loaded</span>
 
-      <div class="sidebar--postcode" v-if="!latLng.length && $route.name != 'app'">
+      <div
+        class="sidebar--postcode"
+        v-if="!latLng.length && $route.name != 'app'"
+      >
         <label for="postcode" class="sr-only">Postcode</label>
-        <input @keyup.enter="convertPostcodeToLatLng" placeholder="Enter postcode" id="postcode" class="sidebar--postcode--input" type="text" v-model="postcode">
-        <button class="sidebar--postcode--button" @click="convertPostcodeToLatLng" aria-label="Search">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        <input
+          @keyup.enter="convertPostcodeToLatLng"
+          placeholder="Enter postcode"
+          id="postcode"
+          class="sidebar--postcode--input"
+          type="text"
+          v-model="postcode"
+        />
+        <button
+          class="sidebar--postcode--button"
+          @click="convertPostcodeToLatLng"
+          aria-label="Search"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
           </svg>
         </button>
       </div>
       <div v-else-if="$route.name != 'app'" class="sidebar--postcode">
         <div class="sidebar--postcode--badge">
           Near to {{ postcode }}
-          <button class="sidebar--postcode--clear" @click="clearPostcode" aria-label="Clear postcode">✕</button>
+          <button
+            class="sidebar--postcode--clear"
+            @click="clearPostcode"
+            aria-label="Clear postcode"
+          >
+            ✕
+          </button>
         </div>
       </div>
     </div>
 
     <p v-if="error" class="sidebar--postcode--error">{{ error }}</p>
-    <transition name="fade" >
-
-      <nav class="sidebar--menu" v-show="isLandscape || menuOpen" >
-        <template v-for="category in categories"  :class="($route.params.slug && $route.params.slug != category.slug) ? 'contract' : 'expand'">
-          <router-link :to="($route.params.slug && $route.params.slug == category.slug) ? { name: 'app'} : { name: 'category', params: { slug: category.slug } }" :ref="category.slug" :tabindex="($route.params.slug && $route.params.slug != category.slug) ? -1 : ''" :key="category.slug" class="sidebar--menu--item" :class="($route.params.slug && $route.params.slug !== category.slug) ? 'contract' : 'expand'">
-              <img class="sidebar--menu--item--icon" :src="category.icon" />
-              {{ category.title }}
-              <svg class="sidebar--menu--item--arrow"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 841.89 595.28"><path d="M412.98 119.97l64.25 49.48L623.3 281.97c8.54 6.57 8.54 25.49 0 32.07L477.22 426.55l-64.25 49.48" fill="none" stroke="currentColor" stroke-width="15.527" stroke-miterlimit="10"/></svg>
+    <transition name="fade">
+      <nav class="sidebar--menu" v-show="isLandscape || menuOpen">
+        <template
+          v-for="category in categories"
+          :class="
+            $route.params.slug && $route.params.slug != category.slug
+              ? 'contract'
+              : 'expand'
+          "
+        >
+          <router-link
+            :to="
+              $route.params.slug && $route.params.slug == category.slug
+                ? { name: 'app' }
+                : { name: 'category', params: { slug: category.slug } }
+            "
+            :ref="category.slug"
+            :tabindex="
+              $route.params.slug && $route.params.slug != category.slug
+                ? -1
+                : ''
+            "
+            :key="category.slug"
+            class="sidebar--menu--item"
+            :class="
+              $route.params.slug && $route.params.slug !== category.slug
+                ? 'contract'
+                : 'expand'
+            "
+          >
+            <img class="sidebar--menu--item--icon" :src="category.icon" />
+            {{ category.title }}
+            <svg
+              class="sidebar--menu--item--arrow"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 841.89 595.28"
+            >
+              <path
+                d="M412.98 119.97l64.25 49.48L623.3 281.97c8.54 6.57 8.54 25.49 0 32.07L477.22 426.55l-64.25 49.48"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="15.527"
+                stroke-miterlimit="10"
+              />
+            </svg>
           </router-link>
           <transition name="expand">
-            <router-view v-if="$route.params.slug == category.slug" :key="$route.params.slug" :menuOpen="menuOpen" :isLandscape="isLandscape" :userLatLng="userLatLng" :selectedEntryID="selectedEntryID" @menu-entry-selected="$emit('menu-entry-selected', $event)" @filtered-entries="$emit('filtered-entries', $event)"></router-view>
+            <router-view
+              v-if="$route.params.slug == category.slug"
+              :key="$route.params.slug"
+              :menuOpen="menuOpen"
+              :isLandscape="isLandscape"
+              :userLatLng="userLatLng"
+              :selectedEntryID="selectedEntryID"
+              @menu-entry-selected="$emit('menu-entry-selected', $event)"
+              @filtered-entries="$emit('filtered-entries', $event)"
+            ></router-view>
           </transition>
         </template>
       </nav>
     </transition>
-
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'Menu',
-  props: ['categories','selectedEntryID', 'isLandscape', 'userLatLng', 'entryCount'],
+  name: "Menu",
+  props: [
+    "categories",
+    "selectedEntryID",
+    "isLandscape",
+    "userLatLng",
+    "entryCount",
+  ],
   data() {
     return {
       menuOpen: false,
@@ -62,51 +152,47 @@ export default {
       postcode: null,
       error: null,
       latLng: [],
-    }
+    };
   },
-  computed: {
-  },
+  computed: {},
   watch: {
     latLng: function() {
-      this.$emit('user-latlng-changed', this.latLng);
+      this.$emit("user-latlng-changed", this.latLng);
     },
     selectedEntryID: function(selectedEntryID) {
-      if(selectedEntryID) {
+      if (selectedEntryID) {
         this.menuOpen = false;
       }
-    }
+    },
   },
   methods: {
     mouseoverCategory: function(selectedCategoryID) {
-      this.$emit('menu-hovered',selectedCategoryID);
+      this.$emit("menu-hovered", selectedCategoryID);
     },
     convertPostcodeToLatLng: function() {
-      fetch(`//api.postcodes.io/postcodes/${ this.postcode.split(' ').join('') }`)
-      .then(response => response.json())
-      .then((data) => {
-        if(data.status == 200) {
-          this.latLng = [data.result.latitude, data.result.longitude];
-          this.error = null;
-          this.postcode = this.postcode.toUpperCase()
-        }
-        else {
-          this.error = data.error;
-        }
-      });
+      fetch(`//api.postcodes.io/postcodes/${this.postcode.split(" ").join("")}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status == 200) {
+            this.latLng = [data.result.latitude, data.result.longitude];
+            this.error = null;
+            this.postcode = this.postcode.toUpperCase();
+          } else {
+            this.error = data.error;
+          }
+        });
     },
     clearPostcode: function() {
       this.latLng = [];
       this.postcode = null;
-    }
+    },
   },
-  mounted() {
-  }
-}
+  mounted() {},
+};
 </script>
 
 <style lang="scss">
-
-@import '../../styles/base.scss';
+@import "../../styles/base.scss";
 
 .sidebar {
   z-index: 999999;
@@ -128,10 +214,9 @@ export default {
   right: ms(-2);
   width: auto;
 
-
   &::before {
     height: ms(-2);
-    content: '';
+    content: "";
     display: block;
     background-color: $brand-blue;
     margin-bottom: ms(3);
@@ -227,7 +312,6 @@ export default {
   }
 
   &--postcode {
-
     margin-left: auto;
     position: relative;
 
@@ -308,11 +392,10 @@ export default {
       padding: 0 ms(2);
 
       @media screen and (orientation: landscape) and (min-width: 800px) {
-
       }
 
       // &:not(:last-child) {
-        border-top: 1px solid $light-gray;
+      border-top: 1px solid $light-gray;
       // }
 
       @extend .expand-enter-active;
@@ -341,7 +424,6 @@ export default {
         .sidebar--menu--item--arrow {
           transform: rotate(90deg);
         }
-
       }
 
       &:hover {
