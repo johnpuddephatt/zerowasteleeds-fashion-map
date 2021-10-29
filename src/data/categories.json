@@ -34,5 +34,17 @@
     "title": "Sustainable designers",
     "sheet_number": "Sustainable%20Fashion%20Designers",
     "icon": "/assets/images/sustainable-fashion-designers-icon.svg"
+  },
+  {
+    "slug": "vintage-shops",
+    "title": "Vintage shops",
+    "sheet_number": "Vintage%20shops",
+    "icon": "/assets/images/vintage-shops-icon.svg"
+  },
+  {
+    "slug": "dress-agencies",
+    "title": "Dress agencies",
+    "sheet_number": "Dress%20agencies",
+    "icon": "/assets/images/dress-agencies-icon.svg"
   }
 ]
