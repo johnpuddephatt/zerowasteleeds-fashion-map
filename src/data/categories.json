@@ -6,16 +6,10 @@
     "icon": "/assets/images/charity-shop-icon.svg"
   },
   {
-    "slug": "textile-banks",
-    "title": "Textile banks",
-    "sheet_number": "Textile%20banks",
-    "icon": "/assets/images/charity-textile-banks-icon.svg"
-  },
-  {
-    "slug": "alterations-and-repairs",
-    "title": "Alterations and repairs",
-    "sheet_number": "Clothes%20and%20Shoes%20Alterations%20and%20Repair",
-    "icon": "/assets/images/alterations-and-repairs-icon.svg"
+    "slug": "vintage-shops",
+    "title": "Vintage shops",
+    "sheet_number": "Vintage%20shops",
+    "icon": "/assets/images/vintage-shops-icon.svg"
   },
   {
     "slug": "clothes-exchanges",
@@ -24,10 +18,22 @@
     "icon": "/assets/images/clothes-exchanges-icon.svg"
   },
   {
+    "slug": "dress-agencies",
+    "title": "Dress agencies",
+    "sheet_number": "Dress%20agencies",
+    "icon": "/assets/images/dress-agencies-icon.svg"
+  },
+  {
     "slug": "sewing",
     "title": "Sewing",
     "sheet_number": "Sewing",
     "icon": "/assets/images/sewing-workshops-icon.svg"
+  },
+  {
+    "slug": "alterations-and-repairs",
+    "title": "Alterations and repairs",
+    "sheet_number": "Clothes%20and%20Shoes%20Alterations%20and%20Repair",
+    "icon": "/assets/images/alterations-and-repairs-icon.svg"
   },
   {
     "slug": "sustainable-fashion-designers",
@@ -36,15 +42,9 @@
     "icon": "/assets/images/sustainable-fashion-designers-icon.svg"
   },
   {
-    "slug": "vintage-shops",
-    "title": "Vintage shops",
-    "sheet_number": "Vintage%20shops",
-    "icon": "/assets/images/vintage-shops-icon.svg"
-  },
-  {
-    "slug": "dress-agencies",
-    "title": "Dress agencies",
-    "sheet_number": "Dress%20agencies",
-    "icon": "/assets/images/dress-agencies-icon.svg"
+    "slug": "textile-banks",
+    "title": "Textile banks",
+    "sheet_number": "Textile%20banks",
+    "icon": "/assets/images/charity-textile-banks-icon.svg"
   }
 ]
