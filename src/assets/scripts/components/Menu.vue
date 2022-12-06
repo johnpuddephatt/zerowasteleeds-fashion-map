@@ -213,6 +213,7 @@ export default {
   left: ms(-2);
   right: ms(-2);
   width: auto;
+  height: 85vh;
 
   &::before {
     height: ms(-2);
@@ -228,6 +229,8 @@ export default {
     top: ms(-1);
     transition: top 1s ease, z-index 0s ease;
   }
+
+  
 
   @media screen and (orientation: landscape) and (min-width: 800px) {
     display: block;
