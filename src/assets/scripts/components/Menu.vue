@@ -213,7 +213,7 @@ export default {
   left: ms(-2);
   right: ms(-2);
   width: auto;
-  height: 85vh;
+  height: 80vh;
 
   &::before {
     height: ms(-2);
